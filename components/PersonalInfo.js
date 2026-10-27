@@ -1,57 +1,62 @@
-import { Text, SafeAreaView, TextInput, StyleSheet, View, Button, TouchableOpacity } from 'react-native';
-import DatePicker from '../components/DatePicker.js';
-import {useState} from 'react';
 
+import {
+  Text,
+  TextInput,
+  StyleSheet,
+  View
+} from 'react-native';
+
+import DatePicker from '../components/DatePicker.js';
+import { useState } from 'react';
 
 export default function PersonalInfo({screenstyle, data, setData}) {
+
   const [dob, setDob] = useState(new Date("2000-01-01"));
- 
-  const [showDTP,setShowDTP] = useState(false);
-  function showDatePicker(){
-    setShowDTP(true);
-  }
-  function hideDatePicker(value){
-    setDob(value);
-    setShowDTP(false);
-  }
+
   return (
     <View style={screenstyle}>
-      <View style={styles.label}><Text style={styles.label}>Firstname</Text></View>
-      <TextInput style={styles.textbox} placeholder="Enter your first name"/>
+
+      <Text style={styles.label}>Firstname</Text>
+      <TextInput
+        style={styles.textbox}
+        placeholder="Enter your first name"
+      />
+
       <Text style={styles.label}>Lastname</Text>
-      <TextInput style={styles.textbox} placeholder="Enter your last name"/>  
-      <DatePicker thisDate={dob} setThisdate={setDob} datelabel="Date of Birth" />
+      <TextInput
+        style={styles.textbox}
+        placeholder="Enter your last name"
+      />
+
+      <View style={styles.section}>
+        <DatePicker
+          thisDate={dob}
+          setThisdate={setDob}
+          datelabel="Date of Birth"
+        />
+      </View>
+
     </View>
   );
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   label: {
-    flexDirection:"row",
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
-  textbox:  {
-    flexDirection: "row",
-    borderRadius: 5,
-    padding: 7,
-    border: "1px solid black",
-    width: "100%",
-    fontSize: 24,
-    marginBottom: 14,
-    backgroundColor: "white",
-  },
-  button: {
-    width: "100%",
-    height: 50,
-    marginTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+  textbox: {
+    borderWidth: 1,
+    borderColor: '#cccccc',
     borderRadius: 8,
-    padding: 10,
-    borderWidth: 2,
-    backgroundColor: '#0569FF',
-    borderColor: '#0569FF'
-  }
-  
+    padding: 12,
+    width: '100%',
+    fontSize: 16,
+    marginBottom: 18,
+    backgroundColor: 'white',
+  },
+  section: {
+    marginTop: 5,
+  },
 });

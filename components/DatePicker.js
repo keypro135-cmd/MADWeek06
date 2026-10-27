@@ -1,68 +1,79 @@
-import { Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {useState} from 'react';
+import { useState } from 'react';
 
+export default function DatePicker({ thisDate, setThisdate, datelabel }) {
+  const [showDTP, setShowDTP] = useState(false);
 
-export default function DatePicker({thisDate, setThisdate, datelabel}) {
-
-  const [dob, setDob] = useState(new Date("2000-01-01"));
- 
-  const [showDTP,setShowDTP] = useState(false);
-  function showDatePicker(){
+  function showDatePicker() {
     setShowDTP(true);
   }
-  function hideDatePicker(value){
-    setThisdate(value);
+
+  function hideDatePicker(event, selectedDate) {
     setShowDTP(false);
+
+    if (event.type === 'set' && selectedDate) {
+      setThisdate(selectedDate);
+    }
   }
+
   return (
-    <>
-    <Text style={styles.label}>{datelabel}</Text>
-    <View style={{flex:1,width: "100%"}} >
-      
-      <Text style={styles.textbox}>{thisDate.toLocaleDateString()}</Text>
-      <TouchableOpacity style={styles.button} onPress={showDatePicker}><Text style={{fontSize: 24, fontWeight: "bold"}}>Choose Date</Text></TouchableOpacity>
-            {showDTP ? (
-         <DateTimePicker style={styles.textbox}
-            value={thisDate}
-            mode={'date'}
-            onChange={(event, value) => hideDatePicker(value)}
-            display="default"
-         />
-      ) : (<View />)}
-      
+    <View style={styles.container}>
+      <Text style={styles.label}>{datelabel}</Text>
+
+      <Text style={styles.textbox}>
+        {thisDate.toLocaleDateString()}
+      </Text>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={showDatePicker}
+      >
+        <Text style={styles.buttonText}>Choose Date</Text>
+      </TouchableOpacity>
+
+      {showDTP && (
+        <DateTimePicker
+          value={thisDate}
+          mode="date"
+          display="default"
+          onChange={hideDatePicker}
+        />
+      )}
     </View>
-    </>
   );
 }
 
-const styles = StyleSheet.create({ 
-  label: {
-    flexDirection:"row",
-    fontSize: 24,
-    fontWeight: "bold",
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    marginBottom: 15,
   },
-  textbox:  {
-    flexDirection: "row",
-    borderRadius: 5,
-    padding: 7,
-    border: "1px solid black",
-    fontSize: 24,
-    marginBottom: 14,
-    backgroundColor: "white",
-    height: 50
+  label: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  textbox: {
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    backgroundColor: 'white',
+    marginBottom: 10,
   },
   button: {
-    width: "100%",
-    height: 50,
-    marginTop: 20,
+    height: 45,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 8,
-    padding: 10,
-    borderWidth: 2,
     backgroundColor: '#0569FF',
-    borderColor: '#0569FF'
-  }
-  
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+  },
 });

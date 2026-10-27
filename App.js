@@ -1,7 +1,13 @@
 
-
 import { useState } from 'react';
-import { StyleSheet, View, Image, Dimensions, Text, TouchableOpacity, Alert } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  TouchableOpacity
+} from 'react-native';
+
 import Swiper from 'react-native-swiper';
 import PersonalInfo from './components/PersonalInfo';
 import MovieBooking from './components/MovieBooking';
@@ -19,21 +25,30 @@ export default function App() {
 
   async function saveData() {
     alert("Saved with UUID: " + uuid);
-    Alert.alert("Saved with UUID: " + uuid);
   }
 
   return (
     <View style={styles.screencontainer}>
+
       <View style={styles.imgview}>
-        <Image source={require('./assets/moviesV3.png')}/>
+        <Image
+          source={require('./assets/moviesV3.png')}
+          style={styles.image}
+          resizeMode="contain"
+        />
       </View>
 
-      <Swiper showsButtons={true}>
+      <Swiper
+        showsButtons={true}
+        loop={false}
+        style={styles.swiper}
+      >
         <PersonalInfo
           screenstyle={styles.screen}
           data={booking}
           setData={setBooking}
         />
+
         <MovieBooking
           screenstyle={styles.screen}
           data={booking}
@@ -41,40 +56,53 @@ export default function App() {
         />
       </Swiper>
 
-      <TouchableOpacity style={styles.button} onPress={saveData}>
-        <Text style={{fontSize: 24, fontWeight: "bold"}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={saveData}
+      >
+        <Text style={styles.buttonText}>
           Save Data
         </Text>
       </TouchableOpacity>
+
     </View>
   );
 }
 
-var width = Dimensions.get('window');
-
 const styles = StyleSheet.create({
-  imgview: {
-    flexDirection: "row",
-    justifyContent: "center",
-    flex: .5,
-    marginTop: "8%"
-  },
   screencontainer: {
-    flexDirection: "column",
     flex: 1,
-    padding: "1%",
-    backgroundColor: "lightgrey"
+    backgroundColor: '#f2f2f2',
+    paddingTop: 35,
+  },
+  imgview: {
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: '90%',
+    height: '100%',
+  },
+  swiper: {
+    flex: 1,
   },
   screen: {
     flex: 1,
-    alignItems: "start",
-    padding: "10%"
+    paddingHorizontal: 35,
+    paddingTop: 15,
+    paddingBottom: 10,
   },
   button: {
-    alignItems: "center",
-    backgroundColor: "lightblue",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5
-  }
+    backgroundColor: '#dddddd',
+    padding: 14,
+    marginHorizontal: 20,
+    marginBottom: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
 });

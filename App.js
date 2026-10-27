@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -15,7 +15,8 @@ import * as Crypto from 'expo-crypto';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
-  var uuid = Crypto.randomUUID();
+
+  const uuid = useRef(Crypto.randomUUID()).current;
 
   const [booking, setBooking] = useState({
     bookDate: "2026-10-19",
@@ -30,6 +31,24 @@ export default function App() {
       alert("Saved with UUID: " + uuid);
     } catch (error) {
       alert("Error saving data: " + error.message);
+    }
+  }
+
+  async function getData() {
+    try {
+      let thisBooking = await AsyncStorage.getItem(uuid);
+
+      if (thisBooking === null) {
+        alert("No saved booking found.");
+        return;
+      }
+
+      let parsedBooking = JSON.parse(thisBooking);
+
+      alert("Movie Title: " + parsedBooking.movieTitle);
+
+    } catch (error) {
+      alert("Error getting data: " + error.message);
     }
   }
 
@@ -71,6 +90,15 @@ export default function App() {
         </Text>
       </TouchableOpacity>
 
+      <TouchableOpacity
+        style={styles.button}
+        onPress={getData}
+      >
+        <Text style={styles.buttonText}>
+          Get Data
+        </Text>
+      </TouchableOpacity>
+
     </View>
   );
 }
@@ -101,9 +129,9 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#dddddd',
-    padding: 14,
+    padding: 12,
     marginHorizontal: 20,
-    marginBottom: 15,
+    marginBottom: 8,
     borderRadius: 8,
     alignItems: 'center',
   },

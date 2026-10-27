@@ -12,6 +12,7 @@ import Swiper from 'react-native-swiper';
 import PersonalInfo from './components/PersonalInfo';
 import MovieBooking from './components/MovieBooking';
 import * as Crypto from 'expo-crypto';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   var uuid = Crypto.randomUUID();
@@ -24,7 +25,12 @@ export default function App() {
   });
 
   async function saveData() {
-    alert("Saved with UUID: " + uuid);
+    try {
+      await AsyncStorage.setItem(uuid, JSON.stringify(booking));
+      alert("Saved with UUID: " + uuid);
+    } catch (error) {
+      alert("Error saving data: " + error.message);
+    }
   }
 
   return (
